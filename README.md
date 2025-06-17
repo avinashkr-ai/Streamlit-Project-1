@@ -1,97 +1,84 @@
-# Streamlit Interactive Data Visualization App 📊
+# Streamlit-Based Stock Price App 📈
+
+A simple yet powerful Streamlit application that fetches and displays stock price data and candlestick charts using the yfinance library.
 
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org/)
 
-A simple yet effective Streamlit application showcasing interactive data visualization. This project provides a starting point for building more complex data-driven applications with Streamlit.
-
 ## Table of Contents
 
-1.  [Features](#features)
-2.  [Installation](#installation)
-3.  [Usage](#usage)
-4.  [Configuration](#configuration)
-5.  [File Structure](#file-structure)
-6.  [Contributing](#contributing)
-7.  [License](#license)
-8.  [Contact](#contact)
+- [Features](#features)
+- [Demo](#demo)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [File Structure](#file-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-*   Interactive data display using Streamlit.
-*   Simple, easy-to-understand codebase for beginners.
-*   Demonstrates basic Streamlit UI elements.
-*   Easily customizable for various data visualization tasks.
+*   **Stock Data Retrieval:** Fetches real-time stock data using the `yfinance` library.
+*   **Candlestick Chart Visualization:** Generates interactive candlestick charts using Plotly for a clear view of price movements.
+*   **User-Friendly Interface:** Streamlit provides an intuitive and easy-to-use web interface.
+*   **Customizable Time Range:** Allows users to specify the start and end dates for the data displayed.
+*   **Dynamic Stock Selection:** Users can input any valid stock ticker symbol.
+
+## Demo
+
+While a live demo is not currently available, here's a representation of what the app looks like:
+
+![Streamlit Stock App Demo](https://i.imgur.com/example.png)  *(Replace with actual screenshot link)*
 
 ## Installation
 
-1.  Clone the repository:
+To get started, clone the repository and install the necessary dependencies:
 
-    ```bash
-    git clone https://github.com/username/Streamlit-Project-1.git
-    cd Streamlit-Project-1
+```bash
+git clone <repository_url>
+cd <repository_directory>
+pip install -r requirements.txt
 
-2.  Create a virtual environment (recommended):
+The `requirements.txt` file includes:
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Linux/macOS
-    venv\Scripts\activate  # On Windows
-
-3.  Install the required packages:
-
-    ```bash
-    pip install streamlit pandas numpy
+*   `streamlit`
+*   `yfinance`
+*   `plotly`
+*   `pandas`
 
 ## Usage
 
-1.  Run the Streamlit application:
+Run the Streamlit application using the following command:
 
-    ```bash
-    streamlit run streamlit_app.py
+```bash
+streamlit run streamlit_app.py
 
-2.  Open your browser to the URL provided by Streamlit (usually `http://localhost:8501`).
+This will launch the application in your web browser.  Enter a stock ticker (e.g., AAPL for Apple, MSFT for Microsoft), select the start and end dates, and the app will display the candlestick chart and stock data.
 
-3.  Interact with the Streamlit application to view the data visualization.
-
-Example Usage:
+Example:
 
 ```python
 import streamlit as st
+import yfinance as yf
+import plotly.graph_objects as go
 import pandas as pd
-import numpy as np
 
-st.title('Simple Data Visualization')
+# Sample Usage in Streamlit app
+tickerSymbol = 'AAPL'
+tickerData = yf.Ticker(tickerSymbol)
+tickerDf = tickerData.history(period='1d', start='2023-01-01', end='2023-01-10')
 
-# Sample data
-data = pd.DataFrame({
-    'col1': np.arange(10),
-    'col2': np.random.randn(10)
-})
-
-st.line_chart(data)
+st.line_chart(tickerDf.Close)
 
 ## Configuration
 
-This application does not currently require any specific environment variables. However, you can easily add configuration options using Streamlit's `st.secrets` or environment variables as needed.
-
-Example (using environment variables):
-
-```python
-import streamlit as st
-import os
-
-api_key = os.environ.get("API_KEY")
-
-if api_key:
-    st.success("API Key loaded successfully!")
-else:
-    st.error("API Key not found. Please set the API_KEY environment variable.")
+No specific configuration files are required for this application.  The ticker symbol and date range are configured directly through the Streamlit user interface.
 
 ## File Structure
 
-Streamlit-Project-1/
-├── README.md          # This file
-└── streamlit_app.py   # The main Streamlit application
+└── streamlit_app.py
+
+*   `streamlit_app.py`: Contains the main Streamlit application code.
 
 ## Contributing
 
@@ -99,13 +86,15 @@ Contributions are welcome! Please follow these steps:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with clear, descriptive commit messages.
+3.  Make your changes and commit them with descriptive messages.
 4.  Submit a pull request.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE) - see the `LICENSE` file for details.
+This project is licensed under the [MIT License](LICENSE) - see the `LICENSE` file for details.  *(Create a LICENSE file if providing one)*
 
 ## Contact
 
-[Your Name] - [your.email@example.com](mailto:your.email@example.com)
+Maintainer: Your Name
+
+Email: your.email@example.com
