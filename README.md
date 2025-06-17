@@ -1,100 +1,92 @@
-# Streamlit-Based Stock Price App 📈
+# Streamlit-Project-1: Simple Stock Price App
 
-A simple yet powerful Streamlit application that fetches and displays stock price data and candlestick charts using the yfinance library.
+A simple Streamlit application to display stock prices. This application fetches stock data using the `yfinance` library and visualizes the historical stock prices using `plotly.graph_objects`.
 
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://python.org/)
-
-## Table of Contents
-
-- [Features](#features)
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [File Structure](#file-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 
 ## Features
 
-*   **Stock Data Retrieval:** Fetches real-time stock data using the `yfinance` library.
-*   **Candlestick Chart Visualization:** Generates interactive candlestick charts using Plotly for a clear view of price movements.
-*   **User-Friendly Interface:** Streamlit provides an intuitive and easy-to-use web interface.
-*   **Customizable Time Range:** Allows users to specify the start and end dates for the data displayed.
-*   **Dynamic Stock Selection:** Users can input any valid stock ticker symbol.
-
-## Demo
-
-While a live demo is not currently available, here's a representation of what the app looks like:
-
-![Streamlit Stock App Demo](https://i.imgur.com/example.png)  *(Replace with actual screenshot link)*
+- Fetches stock data from Yahoo Finance.
+- Displays a line chart of the stock's closing price over a period.
+- User-friendly interface built with Streamlit.
+- Allows users to select a stock ticker and view its historical data.
 
 ## Installation
 
-To get started, clone the repository and install the necessary dependencies:
+To run this application, you need to install the required dependencies.  It is highly recommended to create a virtual environment.
 
 ```bash
-git clone <repository_url>
-cd <repository_directory>
-pip install -r requirements.txt
+python -m venv venv
+source venv/bin/activate  # On Linux/macOS
+venv\Scripts\activate  # On Windows
 
-The `requirements.txt` file includes:
+Then, install the dependencies using pip:
 
-*   `streamlit`
-*   `yfinance`
-*   `plotly`
-*   `pandas`
+```bash
+pip install streamlit yfinance plotly
 
 ## Usage
 
-Run the Streamlit application using the following command:
+To run the application, navigate to the directory containing `streamlit_app.py` and run the following command:
 
 ```bash
 streamlit run streamlit_app.py
 
-This will launch the application in your web browser.  Enter a stock ticker (e.g., AAPL for Apple, MSFT for Microsoft), select the start and end dates, and the app will display the candlestick chart and stock data.
-
-Example:
-
-```python
-import streamlit as st
-import yfinance as yf
-import plotly.graph_objects as go
-import pandas as pd
-
-# Sample Usage in Streamlit app
-tickerSymbol = 'AAPL'
-tickerData = yf.Ticker(tickerSymbol)
-tickerDf = tickerData.history(period='1d', start='2023-01-01', end='2023-01-10')
-
-st.line_chart(tickerDf.Close)
+This will open the application in your web browser. You can then enter a stock ticker (e.g., AAPL for Apple) and view its historical stock prices.
 
 ## Configuration
 
-No specific configuration files are required for this application.  The ticker symbol and date range are configured directly through the Streamlit user interface.
-
-## File Structure
-
-└── streamlit_app.py
-
-*   `streamlit_app.py`: Contains the main Streamlit application code.
+No specific configuration files are needed for this project.  The application is self-contained within the `streamlit_app.py` file.
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with descriptive messages.
-4.  Submit a pull request.
+Contributions are welcome! Please feel free to submit pull requests with bug fixes, new features, or improvements to the documentation.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE) - see the `LICENSE` file for details.  *(Create a LICENSE file if providing one)*
+This project is open source and available under the [MIT License](LICENSE).
 
-## Contact
+---
 
-Maintainer: Your Name
+## Code Details
 
-Email: your.email@example.com
+### `streamlit_app.py`
+
+```python
+import yfinance as yf
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+
+st.write("""
+# Simple Stock Price App
+
+Shown are the stock closing price and volume of Google!
+""")
+
+tickerSymbol = st.text_input("Enter Stock Ticker:", "GOOGL")
+
+tickerData = yf.Ticker(tickerSymbol)
+
+tickerDf = tickerData.history(period='1d', start='2010-5-31', end='2023-5-31')
+
+st.write(f"""
+## Closing Price Chart for {tickerSymbol}
+""")
+
+fig_close = go.Figure(data=[go.Candlestick(x=tickerDf.index,
+                open=tickerDf['Open'],
+                high=tickerDf['High'],
+                low=tickerDf['Low'],
+                close=tickerDf['Close'])])
+
+st.plotly_chart(fig_close)
+
+
+st.write(f"""
+## Volume Chart for {tickerSymbol}
+""")
+
+fig_volume = go.Figure(data=[go.Bar(x=tickerDf.index, y=tickerDf['Volume'])])
+st.plotly_chart(fig_volume)
